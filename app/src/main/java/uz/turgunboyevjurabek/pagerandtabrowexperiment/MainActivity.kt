@@ -97,30 +97,30 @@ fun TabView() {
     val tabItems= listOf(
         TabItem(
             title = "HomePage",
-            selectedIcon = Icons.Filled.Home,
-            unselectedIcon = Icons.Outlined.Home
+            selectedIcon = painterResource(id = R.drawable.home_fiel),
+            unselectedIcon = painterResource(id = R.drawable.home_uot)
         ),
         TabItem(
-            title = "HomePage",
-            selectedIcon = Icons.Filled.Home,
-            unselectedIcon = Icons.Outlined.Home
+            title = "CarPage",
+            selectedIcon = painterResource(id = R.drawable.car_fiel),
+            unselectedIcon = painterResource(id = R.drawable.car_out)
         ),
         TabItem(
-            title = "HomePage",
-            selectedIcon = Icons.Filled.Home,
-            unselectedIcon = Icons.Outlined.Home
+            title = "NaturalPage",
+            selectedIcon = painterResource(id = R.drawable.nattural_1),
+            unselectedIcon = painterResource(id = R.drawable.nattural_1)
         ),
         TabItem(
-            title = "HomePage",
-            selectedIcon = Icons.Filled.Home,
-            unselectedIcon = Icons.Outlined.Home
+            title = "MixPage",
+            selectedIcon = painterResource(id = R.drawable.mix2),
+            unselectedIcon = painterResource(id = R.drawable.mix_1)
         )
     )
     val pages= listOf(
         HomeScreen,
-        SearchScreen,
-        ProfileScreen,
-        SearchScreen
+        CarScreen,
+        NaturalScreen,
+        MixScreen
     )
     var selectedScreen by remember { mutableStateOf<Screen>(HomeScreen) }
 
@@ -140,6 +140,7 @@ fun TabView() {
     LaunchedEffect(selectedTabIndex){
         pagerState.animateScrollToPage(selectedTabIndex)
     }
+
     LaunchedEffect(pagerState.currentPage,pagerState.isScrollInProgress){
         if (!pagerState.isScrollInProgress){
             selectedTabIndex=pagerState.currentPage
@@ -162,9 +163,9 @@ fun TabView() {
                     onClick = { selectedTabIndex=index },
                     text = { Text(text = item.title, fontFamily = FontFamily.Serif, fontSize = 10.sp)},
                     icon ={
-                        Icon(
-                            imageVector = if (index == selectedTabIndex) item.selectedIcon else item.unselectedIcon,
-                            contentDescription = null
+                        Image(
+                            painter = if (index == selectedTabIndex) item.selectedIcon else item.unselectedIcon,
+                            contentDescription = null, modifier = Modifier.size(25.dp)
                         )
                     }
                 )
@@ -177,9 +178,9 @@ fun TabView() {
                 .weight(1f)) {
             when (val screen = pages[pagerState.currentPage]) {
                 is HomeScreen -> HomeScreen()
-                is SearchScreen -> SearchScreen()
-                is ProfileScreen -> ProfileScreen()
-                is SettingsScreen -> SettingsScreen
+                is CarScreen -> CarScreen()
+                is NaturalScreen -> NaturalScreen()
+                is MixScreen -> MixScreen()
             }
 
         }
@@ -201,8 +202,8 @@ fun GreetingPreview() {
 }
 data class TabItem(
     val title:String,
-    val selectedIcon:ImageVector,
-    val unselectedIcon:ImageVector,
+    val selectedIcon:Painter,
+    val unselectedIcon:Painter,
 )
 
 @Composable
